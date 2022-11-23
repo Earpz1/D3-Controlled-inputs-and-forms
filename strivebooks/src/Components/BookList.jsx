@@ -5,7 +5,7 @@ import { Component } from 'react'
 class BookList extends Component {
   state = {
     searchQuery: '',
-    Books: this.props.ListOfBooks,
+    books: this.props.ListOfBooks,
   }
 
   FilterBookList = (value) => {
@@ -13,15 +13,15 @@ class BookList extends Component {
       searchQuery: value,
     })
 
-    const searchQuery = this.state.searchQuery
+    let searchQuery = this.state.searchQuery
 
     this.setState({
-      Books: this.state.Books.filter(function (book) {
+      books: this.state.books.filter(function (book) {
         return book.title.includes(searchQuery)
       }),
     })
     console.log(searchQuery)
-    console.log(this.state.Books)
+    console.log(this.props.ListOfBooks)
   }
 
   render() {
@@ -37,10 +37,10 @@ class BookList extends Component {
             onChange={(event) => this.FilterBookList(event.target.value)}
           />
         </Form.Group>
-        <h2>There are currently {this.state.Books.length} books in the list</h2>
+        <h2>There are currently {this.state.books.length} books in the list</h2>
 
         <Row className="w-100">
-          {this.state.Books.map((book) => (
+          {this.state.books.map((book) => (
             <Col key={book.asin} lg={2}>
               <SingleBook book={book} />
             </Col>
