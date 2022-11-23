@@ -1,5 +1,6 @@
 import { Card, Button } from 'react-bootstrap'
 import { Component } from 'react'
+import MyBadge from './MyBadge'
 
 class SingleBook extends Component {
   state = {
