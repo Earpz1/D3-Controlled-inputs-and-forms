@@ -20,7 +20,7 @@ class SingleBook extends Component {
 
   render() {
     return (
-      <Card onClick={this.bookSelected} className="mt-3 cardSelected">
+      <Card onClick={this.bookSelected} className="mt-3">
         <Card.Img variant="top" src={this.props.book.img} className="cardImg" />
         <Card.Body className={this.state.isSelected ? 'cardSelected' : ''}>
           <Card.Title>{this.props.book.title}</Card.Title>
