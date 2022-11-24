@@ -1,6 +1,6 @@
 import { Card, Button } from 'react-bootstrap'
 import { Component } from 'react'
-import MyBadge from './MyBadge'
+import CommentArea from './CommentArea'
 
 class SingleBook extends Component {
   state = {
@@ -21,14 +21,28 @@ class SingleBook extends Component {
 
   render() {
     return (
-      <Card onClick={this.bookSelected} className="mt-3">
-        <Card.Img variant="top" src={this.props.book.img} className="cardImg" />
+      <Card className="mt-3">
+        <Card.Img
+          onClick={this.bookSelected}
+          variant="top"
+          src={this.props.book.img}
+          className="cardImg"
+        />
         <Card.Body className={this.state.isSelected ? 'cardSelected' : ''}>
-          <Card.Title>{this.props.book.title}</Card.Title>
-          <Card.Text>This is a {this.props.book.category} book.</Card.Text>
-          <Button onClick={this.bookSelected} variant="primary">
-            Buy now: ${this.props.book.price}
-          </Button>
+          {this.state.isSelected ? (
+            <>
+              <CommentArea bookID={this.props.book.asin} />
+            </>
+          ) : (
+            ''
+          )}
+          <div className={this.state.isSelected ? 'd-none' : ''}>
+            <Card.Title>{this.props.book.title}</Card.Title>
+            <Card.Text>This is a {this.props.book.category} book.</Card.Text>
+            <Button onClick={this.bookSelected} variant="primary">
+              Buy now: ${this.props.book.price}
+            </Button>
+          </div>
         </Card.Body>
       </Card>
     )

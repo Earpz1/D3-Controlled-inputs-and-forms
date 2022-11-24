@@ -38,14 +38,15 @@ class BookList extends Component {
           />
         </Form.Group>
         <h2>There are currently {this.state.books.length} books in the list</h2>
-
-        <Row className="w-100">
-          {this.state.books.map((book) => (
-            <Col key={book.asin} lg={2}>
-              <SingleBook book={book} />
-            </Col>
-          ))}
-        </Row>
+        <div className="d-flex">
+          <Row className="w-100">
+            {this.state.books.map((book) => (
+              <Col key={book.asin} lg={3}>
+                <SingleBook book={book} />
+              </Col>
+            ))}
+          </Row>
+        </div>
       </Container>
     )
   }
