@@ -10,6 +10,12 @@ class CommentArea extends Component {
   componentDidMount() {
     this.fetchComments()
   }
+  componentDidUpdate(prevProps, prevState) {
+    if (prevProps.bookID !== this.props.bookID) {
+      this.fetchComments()
+    }
+  }
+
   fetchComments = async () => {
     try {
       let response = await fetch(

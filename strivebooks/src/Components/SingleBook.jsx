@@ -7,28 +7,15 @@ class SingleBook extends Component {
     isSelected: false,
   }
 
-  bookSelected = (event) => {
-    this.props.changeAsin(this.props.book.asin)
-
-    if (this.state.isSelected === true) {
-      this.setState({
-        isSelected: false,
-      })
-    } else {
-      this.setState({
-        isSelected: true,
-      })
-    }
-  }
-
   render() {
     return (
       <Card className="mt-3">
         <Card.Img
-          onClick={this.bookSelected}
+          onClick={() => this.props.changeAsin(this.props.book.asin)}
           variant="top"
           src={this.props.book.img}
           className="cardImg"
+          value={this.props.book.asin}
         />
         <Card.Body className={this.state.isSelected ? 'cardSelected' : ''}>
           {this.state.isSelected ? (

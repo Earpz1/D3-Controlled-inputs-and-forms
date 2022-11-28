@@ -8,6 +8,7 @@ class BookList extends Component {
     searchQuery: '',
     books: this.props.ListOfBooks,
     asin: '',
+    isSelected: false,
   }
 
   FilterBookList = (value) => {
@@ -26,11 +27,14 @@ class BookList extends Component {
     console.log(this.props.ListOfBooks)
   }
 
-  changeAsin = (value) => {
+  // This functon is passed to SingleBook
+  changeAsin = (asin) => {
     this.setState({
-      asin: { value },
+      asin: asin,
+      isSelected: true,
     })
   }
+
   render() {
     return (
       <Container fluid>
@@ -46,16 +50,20 @@ class BookList extends Component {
         </Form.Group>
         <h2>There are currently {this.state.books.length} books in the list</h2>
         <div className="d-flex">
-          <Col lg={3}>
-            <CommentArea
-              bookID={this.state.asin}
-              changeAsin={this.changeAsin}
-            />
-          </Col>
+          {this.state.isSelected ? (
+            <>
+              <Col lg={3}>
+                <CommentArea bookID={this.state.asin} />{' '}
+              </Col>
+            </>
+          ) : (
+            ''
+          )}
+
           <Row>
             {this.state.books.map((book) => (
-              <Col key={book.asin} lg={4}>
-                <SingleBook book={book} />
+              <Col key={book.asin} lg={3}>
+                <SingleBook book={book} changeAsin={this.changeAsin} />
               </Col>
             ))}
           </Row>
