@@ -1,11 +1,13 @@
 import { Container, Row, Col, Form } from 'react-bootstrap'
 import SingleBook from './SingleBook'
 import { Component } from 'react'
+import CommentArea from './CommentArea'
 
 class BookList extends Component {
   state = {
     searchQuery: '',
     books: this.props.ListOfBooks,
+    asin: '',
   }
 
   FilterBookList = (value) => {
@@ -24,6 +26,11 @@ class BookList extends Component {
     console.log(this.props.ListOfBooks)
   }
 
+  changeAsin = (value) => {
+    this.setState({
+      asin: { value },
+    })
+  }
   render() {
     return (
       <Container fluid>
@@ -39,9 +46,15 @@ class BookList extends Component {
         </Form.Group>
         <h2>There are currently {this.state.books.length} books in the list</h2>
         <div className="d-flex">
-          <Row className="w-100">
+          <Col lg={3}>
+            <CommentArea
+              bookID={this.state.asin}
+              changeAsin={this.changeAsin}
+            />
+          </Col>
+          <Row>
             {this.state.books.map((book) => (
-              <Col key={book.asin} lg={3}>
+              <Col key={book.asin} lg={4}>
                 <SingleBook book={book} />
               </Col>
             ))}

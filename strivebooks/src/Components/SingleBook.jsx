@@ -8,6 +8,8 @@ class SingleBook extends Component {
   }
 
   bookSelected = (event) => {
+    this.props.changeAsin(this.props.book.asin)
+
     if (this.state.isSelected === true) {
       this.setState({
         isSelected: false,
