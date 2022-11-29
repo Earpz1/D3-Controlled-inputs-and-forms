@@ -1,19 +1,20 @@
-import { Component } from 'react'
+import { useEffect } from 'react'
+import { useState } from 'react'
 
-class DeleteComment extends Component {
-  state = {
-    commentID: this.props.commentID,
-    isDeleted: false,
-  }
+const DeleteComment = (props) => {
+  const [commentID, setCommentID] = useState(props.commentID)
 
-  deleteComment = async (event) => {
+  useEffect(() => {
+    setCommentID(props.commentID)
+  }, [props.commentID])
+
+  const deleteComment = async (event) => {
     try {
       let response = await fetch(
         'https://striveschool-api.herokuapp.com/api/comments/' +
-          this.state.commentID,
+          props.commentID,
         {
           method: 'DELETE',
-          body: JSON.stringify(this.state.addComment),
           headers: {
             'Content-Type': 'application/json',
             Authorization:
@@ -22,20 +23,19 @@ class DeleteComment extends Component {
         },
       )
       if (response.ok) {
-        this.props.fetchComments()
+        props.fetchComments()
         alert('Your comment was deleted!')
       }
     } catch (error) {}
   }
 
-  render() {
-    return (
-      <>
-        <span className="delete-comment" onClick={this.deleteComment}>
-          Delete
-        </span>
-      </>
-    )
-  }
+  return (
+    <>
+      <span className="delete-comment" onClick={deleteComment}>
+        Delete
+      </span>
+    </>
+  )
 }
+
 export default DeleteComment

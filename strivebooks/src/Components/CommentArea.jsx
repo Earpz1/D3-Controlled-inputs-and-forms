@@ -1,26 +1,24 @@
-import { Component } from 'react'
 import CommentsList from './CommentsList'
 import AddComment from './AddComment'
+import { useState } from 'react'
+import { useEffect } from 'react'
 
-class CommentArea extends Component {
-  state = {
-    comments: [],
-    addComment: true,
-  }
-  componentDidMount() {
-    this.fetchComments()
-  }
-  componentDidUpdate(prevProps, prevState) {
-    if (prevProps.bookID !== this.props.bookID) {
-      this.fetchComments()
-    }
-  }
+const CommentArea = (props) => {
+  const [comments, setComments] = useState([])
+  const [addComment, setaddComment] = useState(true)
 
-  fetchComments = async () => {
+  useEffect(() => {
+    fetchComments()
+  }, [])
+
+  useEffect(() => {
+    fetchComments()
+  }, [props.bookID])
+
+  const fetchComments = async () => {
     try {
       let response = await fetch(
-        'https://striveschool-api.herokuapp.com/api/comments/' +
-          this.props.bookID,
+        'https://striveschool-api.herokuapp.com/api/comments/' + props.bookID,
         {
           headers: {
             Authorization:
@@ -30,28 +28,23 @@ class CommentArea extends Component {
       )
       if (response.ok) {
         let commentsList = await response.json()
-
-        this.setState({
-          comments: commentsList,
-        })
+        setComments(commentsList)
       }
     } catch (error) {}
   }
 
-  render() {
-    return (
-      <div>
-        <h4>Comments</h4>
-        <div className="comment-box">
-          <CommentsList
-            comments={this.state.comments}
-            bookID={this.props.bookID}
-            fetchComments={this.fetchComments}
-          />
-        </div>
+  return (
+    <div>
+      <h4>Comments</h4>
+      <div className="comment-box">
+        <CommentsList
+          comments={comments}
+          bookID={props.bookID}
+          fetchComments={fetchComments}
+        />
       </div>
-    )
-  }
+    </div>
+  )
 }
 
 export default CommentArea
