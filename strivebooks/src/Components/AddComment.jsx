@@ -1,44 +1,32 @@
 import { Component } from 'react'
 import { Form, Button } from 'react-bootstrap'
+import { useState } from 'react'
 
-class AddComment extends Component {
-  state = {
-    showForm: false,
-    commentAdded: false,
-    addComment: {
-      comment: '',
-      rate: '1',
-      elementId: this.props.bookID,
-    },
+const AddComment = (props) => {
+  const [showForm, setshowForm] = useState(false)
+  const [commentAdded, setcommentAdded] = useState(false)
+  const [addComment, setaddComment] = useState({
+    comment: '',
+    rate: '1',
+    elementId: props.bookID,
+  })
+
+  const handleChange = (value, fieldToSet) => {
+    setaddComment({ ...addComment, [fieldToSet]: value })
   }
 
-  handleChange = (value, fieldToSet) => {
-    this.setState({
-      addComment: {
-        ...this.state.addComment,
-        [fieldToSet]: value,
-      },
-    })
-  }
-
-  formControl = () => {
-    if (this.state.showForm === true) {
-      this.setState({
-        showForm: false,
-      })
+  const formControl = () => {
+    if (showForm === true) {
+      setshowForm(false)
     } else {
-      this.setState({
-        showForm: true,
-      })
+      setshowForm(true)
     }
   }
 
-  submitComment = async (event) => {
-    this.setState({
-      showForm: false,
-    })
+  const submitComment = async (event) => {
+    setshowForm(false)
 
-    this.props.fetchComments()
+    props.fetchComments()
 
     event.preventDefault()
     try {
@@ -46,7 +34,7 @@ class AddComment extends Component {
         'https://striveschool-api.herokuapp.com/api/comments/',
         {
           method: 'POST',
-          body: JSON.stringify(this.state.addComment),
+          body: JSON.stringify(addComment),
           headers: {
             'Content-Type': 'application/json',
             Authorization:
@@ -55,53 +43,47 @@ class AddComment extends Component {
         },
       )
       if (response.ok) {
-        this.props.fetchComments()
+        props.fetchComments()
         alert('Your comment was added!')
       }
     } catch (error) {}
   }
 
-  render() {
-    return (
-      <>
-        <p className="add-comment" onClick={this.formControl}>
-          Add a comment
-        </p>
-        {this.state.showForm && (
-          <Form onSubmit={this.submitComment}>
-            <Form.Group>
-              <Form.Label>Rating</Form.Label>
-              <Form.Control
-                onChange={(event) =>
-                  this.handleChange(event.target.value, 'rate')
-                }
-                as="select"
-              >
-                <option>1</option>
-                <option>2</option>
-                <option>3</option>
-                <option>4</option>
-                <option>5</option>
-              </Form.Control>
-            </Form.Group>
+  return (
+    <>
+      <p className="add-comment" onClick={formControl}>
+        Add a comment
+      </p>
+      {showForm && (
+        <Form onSubmit={submitComment}>
+          <Form.Group>
+            <Form.Label>Rating</Form.Label>
+            <Form.Control
+              onChange={(event) => handleChange(event.target.value, 'rate')}
+              as="select"
+            >
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5</option>
+            </Form.Control>
+          </Form.Group>
 
-            <Form.Group>
-              <Form.Label>Comments</Form.Label>
-              <Form.Control
-                onChange={(event) =>
-                  this.handleChange(event.target.value, 'comment')
-                }
-                as="textarea"
-                rows={3}
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Submit
-            </Button>
-          </Form>
-        )}
-      </>
-    )
-  }
+          <Form.Group>
+            <Form.Label>Comments</Form.Label>
+            <Form.Control
+              onChange={(event) => handleChange(event.target.value, 'comment')}
+              as="textarea"
+              rows={3}
+            />
+          </Form.Group>
+          <Button variant="primary" type="submit">
+            Submit
+          </Button>
+        </Form>
+      )}
+    </>
+  )
 }
 export default AddComment
